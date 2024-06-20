@@ -33,6 +33,30 @@ body {
     pointer-events: none;
     transition: .5s;
 }
+#dob {
+    position: relative;
+    padding: 15px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#date-label {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 5px;
+    transition: 0.2s;
+    color: #fff;
+    pointer-events: none; /* Prevent label from being clickable */
+}
+#dob:focus + #date-label,
+#dob:not(:placeholder-shown) + #date-label {
+    top: 0;
+    transform: translateY(-100%);
+    font-size: 16px;
+    color: #fff;
+}
 
 .input-group input {
     width: 360px;

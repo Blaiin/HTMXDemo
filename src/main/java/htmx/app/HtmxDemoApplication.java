@@ -1,11 +1,11 @@
-package eskere.HTMXDemo;
+package htmx.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "eskere.HTMXDemo")
+@ComponentScan(basePackages = "htmx.app")
 public class HtmxDemoApplication {
 
 	public static void main(String[] args) {
