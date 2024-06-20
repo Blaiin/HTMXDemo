@@ -1,14 +1,13 @@
 package htmx.app.controller;
 
 import htmx.app.model.User;
-import htmx.app.repositories.UserRepository;
+import htmx.app.service.UserService;
 import htmx.app.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,12 +16,12 @@ import java.util.Objects;
 @Controller
 public class HomeController {
     private final Utils utils;
-    private final UserRepository userRepository;
+    private final UserService service;
 
     @Autowired
-    public HomeController (Utils utils, UserRepository userRepository) {
+    public HomeController (Utils utils, UserService userService) {
         this.utils = utils;
-        this.userRepository = userRepository;
+        this.service = userService;
     }
 
     @GetMapping("/")
@@ -46,14 +45,14 @@ public class HomeController {
         String surname = Objects.requireNonNull(model.getAttribute("surname")).toString();
         LocalDate dob = Objects.requireNonNull((LocalDate) model.getAttribute("dob"));
         if(utils.inDatabase(username)) {
-            userRepository.save(User.builder()
-                            .username(username)
-                            .email(email)
-                            .password(utils.encrypt(password))
-                            .name(name)
-                            .surname(surname)
-                            .dateOfBirth(dob)
-                            .activeSince(LocalDateTime.now())
+            service.createUser(User.builder()
+                                .username(username)
+                                .email(email)
+                                .password(utils.encrypt(password))
+                                .name(name)
+                                .surname(surname)
+                                .dateOfBirth(dob)
+                                .activeSince(LocalDateTime.now())
                     .build());
             return "redirect:homepage";
         }

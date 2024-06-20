@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Insert your information</title>
         <link rel="stylesheet" href=/css/signupForm.css>
+        <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
     </head>
     <body>
         <div class="input-group">
@@ -32,7 +33,7 @@
             <input id="dob" type="date" required>
             <label id="date-label" for="dob">Date of Birth</label>
         </div>
-        <button class="signup" onclick="/signup">Sign Up</button>
+        <button class="btn" hx-post="/signup" hx-trigger="click">Sign Up</button>
         <script src="/static/js/signup.js"></script>
     </body>
 </html>
