@@ -1,5 +1,6 @@
 package htmx.app.model;
 
+import htmx.app.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +11,6 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -33,5 +33,31 @@ public class User {
     private LocalDate dateOfBirth;
     @Column(name = "activeSince")
     private LocalDateTime activeSince;
+
+    public User (String username,
+                 String email,
+                 String password,
+                 String name,
+                 String surname,
+                 LocalDate dateOfBirth,
+                 LocalDateTime activeSince) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
+        this.activeSince = activeSince;
+    }
+
+    public static User fromDTO(UserDTO dto) {
+        return new User(dto.getUsername(),
+                        dto.getEmail(),
+                        dto.getPassword(),
+                        dto.getName(),
+                        dto.getSurname(),
+                        dto.getDateOfBirth(),
+                        dto.getActiveSince());
+    }
 
 }

@@ -1,6 +1,7 @@
 package htmx.app.controller;
 
-import htmx.app.model.User;
+import htmx.app.dto.UserDTO;
+import htmx.app.errors.exception.BusinessException;
 import htmx.app.service.UserService;
 import htmx.app.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
+
 
 @Controller
 public class HomeController {
@@ -38,23 +38,25 @@ public class HomeController {
     }
     @PostMapping("/signup")
     public String signup(Model model) {
-        String username = Objects.requireNonNull(model.getAttribute("username")).toString();
-        String password = Objects.requireNonNull(model.getAttribute("password")).toString();
-        String email = Objects.requireNonNull(model.getAttribute("email")).toString();
-        String name = Objects.requireNonNull(model.getAttribute("name")).toString();
-        String surname = Objects.requireNonNull(model.getAttribute("surname")).toString();
-        LocalDate dob = Objects.requireNonNull((LocalDate) model.getAttribute("dob"));
-        if(utils.inDatabase(username)) {
-            service.createUser(User.builder()
-                                .username(username)
-                                .email(email)
-                                .password(utils.encrypt(password))
-                                .name(name)
-                                .surname(surname)
-                                .dateOfBirth(dob)
-                                .activeSince(LocalDateTime.now())
-                    .build());
-            return "redirect:homepage";
+        if(!service.exists(utils.extract(model, "email").toString())) {
+            try {
+                service.createUser(UserDTO.build(utils.extract(model, "username").toString(),
+                                                    utils.extract(model, "email").toString(),
+                                                    utils.encrypt(utils.extract(model, "password").toString()),
+                                                    utils.extract(model, "name").toString(),
+                                                    utils.extract(model, "surname").toString(),
+                                                    utils.extract(model, "dateOfBirth"),
+                                                    LocalDateTime.now()));
+
+                return "redirect:homepage";
+            } catch (BusinessException | NullPointerException e) {
+                if (e instanceof BusinessException) {
+                    System.err.println(((BusinessException) e).getExceptionReasoning());
+                } else{
+                    System.err.printf("An error occurred while processing your request: %s%n", (e.getMessage()));
+                }
+                return "redirect:error";
+            }
         }
         return "signup";
     }
