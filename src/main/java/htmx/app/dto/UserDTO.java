@@ -1,47 +1,55 @@
 package htmx.app.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Getter
-@AllArgsConstructor(staticName = "build")
-public class UserDTO {
+import static htmx.app.utils.Utils.DateUtils.LOCALE_FORMATTER;
+import static htmx.app.utils.Utils.DateUtils.formatDate;
 
-    private String username;
-    private String email;
-    private String password;
-    private String name;
-    private String surname;
-    private LocalDate dateOfBirth;
-    private LocalDateTime activeSince;
+public record UserDTO (
+    String username,
+    String email,
+    String password,
+    String name,
+    String surname,
+    LocalDate dateOfBirth,
+    LocalDateTime activeSince) {
 
-    public UserDTO (String username, String email, String password, String name, String surname, LocalDateTime activeSince) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.activeSince = activeSince;
+    @Builder(builderMethodName = "buildToPersist")
+    public UserDTO(String username,
+                    String email,
+                    String password,
+                    String name,
+                    String surname,
+                    String dateOfBirth) {
+        this(username,
+                email,
+                password,
+                name,
+                surname,
+                formatDate(dateOfBirth),
+                LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 
-    public static UserDTO build(String username,
-                                String email,
-                                String password,
-                                String name,
-                                String surname,
-                                Object dateOfBirth,
-                                LocalDateTime activeSince) {
-        UserDTO dto = new UserDTO(username, email, password, name, surname, activeSince);
-        dto.setDateOfBirth(dateOfBirth);
-        return dto;
-    }
-    private void setDateOfBirth(Object dateOfBirth) {
-        if(dateOfBirth instanceof LocalDate) this.dateOfBirth = (LocalDate) dateOfBirth;
-        if(dateOfBirth instanceof String) this.dateOfBirth = LocalDate.parse((String) dateOfBirth);
+    @Builder(builderMethodName = "userDTOBuilder")
+    public UserDTO(String username,
+                   String email,
+                   String password,
+                   String name,
+                   String surname,
+                   LocalDate dateOfBirth,
+                   String activeSince) {
+        this(username,
+                email,
+                password,
+                name,
+                surname,
+                formatDate(dateOfBirth),
+                LocalDateTime.parse(activeSince));
     }
 
 

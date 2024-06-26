@@ -8,6 +8,8 @@ import htmx.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class UserService {
     private final UserRepository repository;
@@ -18,12 +20,12 @@ public class UserService {
     }
 
     public void createUser(final UserDTO userDTO) throws BusinessException {
-        if(repository.existsByEmail(userDTO.getEmail())) {
+        if(repository.existsByEmail(userDTO.email())) {
             throw new BusinessException.BusinessExceptionBuilder(BusinessException.Reason.ALREADY_IN_USE)
                     .addProblematicElement(Constants.EMAIL)
                     .build();
         }
-        if(repository.existsByUsername(userDTO.getUsername())) {
+        if(repository.existsByUsername(userDTO.username())) {
             throw new BusinessException.BusinessExceptionBuilder(BusinessException.Reason.ALREADY_IN_USE)
                     .addProblematicElement(Constants.USERNAME)
                     .build();
@@ -32,6 +34,14 @@ public class UserService {
     }
 
     public boolean exists(String identifier) {
-        return repository.existsByEmail(identifier) || repository.existsByUsername(identifier);
+        boolean b = repository.existsByEmail(identifier) || repository.existsByUsername(identifier);
+        System.out.println("User exists: " + b);
+        return b;
+    }
+
+    public boolean authenticate(String email, String encryptedPassword) {
+        Objects.requireNonNull(email, "Email cannot be null");
+        Objects.requireNonNull(encryptedPassword, "Password cannot be null");
+        return repository.existsByEmailAndPassword(email, encryptedPassword);
     }
 }

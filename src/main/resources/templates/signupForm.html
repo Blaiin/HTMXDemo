@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,31 +9,33 @@
         <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
     </head>
     <body>
-        <div class="input-group">
-            <input id="username" type="text" required>
-            <label for="username">Username</label>
-        </div>
-        <div class="input-group">
-            <input id="email" type="email" required>
-            <label for="email">Email</label>
-        </div>
-        <div class="input-group">
-            <input id="password" type="password" required>
-            <label for="password">Password</label>
-        </div>
-        <div class="input-group">
-            <input id="name" type="text" required>
-            <label for="name">First Name</label>
-        </div>
-        <div class="input-group">
-            <input id="surname" type="text" required>
-            <label for="surname">Last Name</label>
-        </div>
-        <div class="input-group">
-            <input id="dob" type="date" required>
-            <label id="date-label" for="dob">Date of Birth</label>
-        </div>
-        <button class="btn" hx-post="/signup" hx-trigger="click">Sign Up</button>
-        <script src="/static/js/signup.js"></script>
+        <form>
+            <div class="input-group">
+                <input id="username" name="username" type="text" required>
+                <label for="username">Username</label>
+            </div>
+            <div class="input-group">
+                <input id="email" name="email" type="email" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="input-group">
+                <input id="password" name="password" type="password" required>
+                <label for="password">Password</label>
+            </div>
+            <div class="input-group">
+                <input id="name" name="name" type="text" required>
+                <label for="name">First Name</label>
+            </div>
+            <div class="input-group">
+                <input id="surname" name="surname" type="text" required>
+                <label for="surname">Last Name</label>
+            </div>
+            <div class="input-group">
+                <input id="dob" name="dateOfBirth" type="date" required>
+                <label id="date-label" for="dob">Date of Birth</label>
+            </div>
+            <button hx-post="/signupUser" hx-trigger="click">Sign Up</button>
+            <script src="/static/js/signup.js"></script>
+        </form>
     </body>
 </html>

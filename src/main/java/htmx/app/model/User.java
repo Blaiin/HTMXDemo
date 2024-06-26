@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -21,20 +21,26 @@ public class User {
 
     @Column(name = "username", nullable = false)
     private String username;
+
     @Column(name = "email", nullable = false)
     private String email;
+
     @Column(name = "password", nullable = false)
     private String password;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "surname")
     private String surname;
+
     @Column(name = "dob", nullable = false)
     private LocalDate dateOfBirth;
-    @Column(name = "activeSince")
+
+    @Column(name = "active_since")
     private LocalDateTime activeSince;
 
-    public User (String username,
+    public User(String username,
                  String email,
                  String password,
                  String name,
@@ -51,13 +57,13 @@ public class User {
     }
 
     public static User fromDTO(UserDTO dto) {
-        return new User(dto.getUsername(),
-                        dto.getEmail(),
-                        dto.getPassword(),
-                        dto.getName(),
-                        dto.getSurname(),
-                        dto.getDateOfBirth(),
-                        dto.getActiveSince());
+        return new User(dto.username(),
+                        dto.email(),
+                        dto.password(),
+                        dto.name(),
+                        dto.surname(),
+                        dto.dateOfBirth(),
+                        dto.activeSince());
     }
 
 }
